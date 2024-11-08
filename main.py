@@ -17,5 +17,11 @@ while True:
     game.show_background(screen)
 
 
+    if game.active:
+        game.show_bird(screen)
+
+    game.show_ground(screen)
+    game.move_ground()
+
     pygame.display.update()
     clock.tick(120)
