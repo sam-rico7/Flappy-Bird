@@ -19,6 +19,7 @@ while True:
 
     if game.active:
         game.show_bird(screen)
+        game.update_bird()
 
     game.show_ground(screen)
     game.move_ground()
