@@ -9,9 +9,11 @@ class Game:
         self.background = pygame.image.load(background_img).convert_alpha()
         self.ground = pygame.image.load(ground_img).convert_alpha()
         self.active = True
-        self.gravity = 5
+        self.gravity = 0.05
         self.bird_movement = 0
-        self.rotation_bird = pygame.Surface((0,0))
+        self.rotated_bird = pygame.Surface((0,0))
+        self.pipes = []
+        self.pipe_height = [280, 425, 562]
 
     def resize_images(self):
         self.bird = pygame.transform.scale(self.bird, (51,34))
@@ -41,5 +43,39 @@ class Game:
     def rotate_bird(self):
         new_bird = pygame.transform.rotozoom(self.bird, -self.bird_movement *3, 1)
         return new_bird
+    
+    def flap(self):
+        self.bird_movement = 0
+        self.bird_movement -= 2.5
+
+    def add_pipe(self):
+        random_pip_pos = random.choice(self.pipe_height)
+        bottom_pipe = self.pipe.get_rect(midtop = (600, random_pip_pos))
+        top_pipe = self.pipe.get_rect(midbottom = (600, random_pip_pos-211))
+        self.pipes.append(bottom_pipe)
+        self.pipes.append(top_pipe)
+
+    def move_pipes(self):
+        for pipe in self.pipes:
+            pipe.centerx -= 1
+            if pipe.centerx <= -40:
+                self.pipes.remove(pipe)
+
+    def show_pipes(self, screen):
+        for pipe in self.pipes:
+            if pipe.bottom >= 700:
+                screen.blit(self.pipe, pipe)
+            else:
+                flip_pipe = pygame.transform.flip(self.pipe, False, True)
+                screen.blit(flip_pipe, pipe)
+
+    def check_collision(self):
+        for pipe in self.pipes:
+            if self.bird_rect.colliderect(pipe):
+                 self.active = False
+        
+        if self.bird_rect.top <= -100 or self.bird_rect >= 650:
+            self.active = False
+
 
 
