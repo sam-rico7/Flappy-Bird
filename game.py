@@ -9,7 +9,7 @@ class Game:
         self.background = pygame.image.load(background_img).convert_alpha()
         self.ground = pygame.image.load(ground_img).convert_alpha()
         self.active = True
-        self.gravity = 0.05
+        self.gravity = 0.07
         self.bird_movement = 0
         self.rotated_bird = pygame.Surface((0,0))
         self.pipes = []
